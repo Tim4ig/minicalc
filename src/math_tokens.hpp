@@ -27,7 +27,8 @@ namespace minicalc
         less_equal,
         bitwise_and,  
         bitwise_or,   
-        bitwise_xor,  
+        bitwise_xor,
+		bitwise_not,
         left_shift,   
         right_shift,  
     };
@@ -38,6 +39,7 @@ namespace minicalc
         binary = 2,
         integer = 4,
 		binary_integer = binary | integer,
+		unary_integer = unary | integer,
     };
 
     const std::unordered_map<operators, type> operatorTypeMap
@@ -61,6 +63,7 @@ namespace minicalc
         {operators::bitwise_xor,   type::binary_integer},
         {operators::left_shift,    type::binary_integer},
         {operators::right_shift,   type::binary_integer},
+		{operators::bitwise_not,   type::unary_integer},
     };
 
     const std::unordered_map<std::string, operators> operatorNameMap
@@ -83,7 +86,8 @@ namespace minicalc
         {"<",	operators::less},
         {"&",	operators::bitwise_and},  
         {"|",	operators::bitwise_or},   
-        {"^",	operators::bitwise_xor},  
+        {"^",	operators::bitwise_xor}, 
+		{"~",	operators::bitwise_not},
     };
 
     const std::unordered_map<operators, int> operatorPrecedenceMap
@@ -105,6 +109,7 @@ namespace minicalc
         {operators::bitwise_and,   2},
         {operators::bitwise_or,    1},
         {operators::bitwise_xor,   1},
+		{operators::bitwise_not,   4},
         {operators::left_shift,    2},
         {operators::right_shift,   2},
     };
@@ -133,5 +138,6 @@ namespace minicalc
         {operators::bitwise_xor,    [](double l, double r) { return static_cast<int>(l) ^ static_cast<int>(r); }},
         {operators::left_shift,     [](double l, double r) { return static_cast<int>(l) << static_cast<int>(r); }},
         {operators::right_shift,    [](double l, double r) { return static_cast<int>(l) >> static_cast<int>(r); }},
+		{operators::bitwise_not,    [](double l, double) { return ~static_cast<int>(l); }},
     };
 }

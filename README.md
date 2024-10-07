@@ -30,8 +30,10 @@ Simply enter a mathematical expression in the terminal, and the interpreter will
 - `10 / 2` → `5`
 - `3 * (2 + 1)` → `9`
 - `3.1 + 2,8` → `5.9`
+- `!(!(~1))` → `1`
   
 ### Invalid Expressions:
 - `10 / 0` → Exception: Division by zero.
 - `5 +` → Exception: Invalid expression.
 - `1,1,1 + 1.1` → Exception: Invalid operand.
+- `!!~1` → Exception: Unexpected end of expression.
