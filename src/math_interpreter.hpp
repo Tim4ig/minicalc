@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <string>
@@ -8,13 +7,14 @@
 
 namespace minicalc
 {
-	class Interpreter
-	{
-	public:
-		double Eval(std::string expression);
-	private:
-		std::vector<token> m_Tokenize(std::string expression);
-		std::vector<token> m_InfixToPostfix(std::vector<token> tokens);
-		double m_EvaluatePostfix(std::vector<token> tokens);
-	};
+    class Interpreter
+    {
+    public:
+        static double Eval(const std::string& expression);
+
+    private:
+        static std::vector<Token> m_Tokenize(std::string expression);
+        static std::vector<Token> m_InfixToPostfix(const std::vector<Token>& tokens);
+        static double m_EvaluatePostfix(const std::vector<Token>& tokens);
+    };
 }

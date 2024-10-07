@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <unordered_map>
@@ -10,85 +9,92 @@
 
 namespace minicalc
 {
-	inline operators GetOperator(std::string op)
-	{
-		auto it = operatorNameMap.find(op);
-		if (it != operatorNameMap.end())
-		{
-			return it->second;
-		}
-		throw std::invalid_argument("Invalid operator");
-	}
+    inline Operators GetOperator(const std::string op)
+    {
+        auto it = OPERATOR_NAME_MAP.find(op);
+        if (it != OPERATOR_NAME_MAP.end())
+        {
+            return it->second;
+        }
+        throw std::invalid_argument("Invalid operator");
+    }
 
-	inline std::string GetOperator(operators op)
-	{
-		for (auto& [key, value] : operatorNameMap)
-		{
-			if (value == op)
-			{
-				return key;
-			}
-		}
-		throw std::invalid_argument("Invalid operator");
-	}
+    inline std::string GetOperator(const Operators op)
+    {
+        for (auto& [key, value] : OPERATOR_NAME_MAP)
+        {
+            if (value == op)
+            {
+                return key;
+            }
+        }
+        throw std::invalid_argument("Invalid operator");
+    }
 
-	inline type GetOperatorType(operators op)
-	{
-		auto it = operatorTypeMap.find(op);
-		if (it != operatorTypeMap.end())
-		{
-			return it->second;
-		}
-		throw std::invalid_argument("Invalid operator");
-	}
+    inline Type GetOperatorType(const Operators op)
+    {
+        auto it = OPERATOR_TYPE_MAP.find(op);
+        if (it != OPERATOR_TYPE_MAP.end())
+        {
+            return it->second;
+        }
+        throw std::invalid_argument("Invalid operator");
+    }
 
-	inline int GetPrecedence(operators op)
-	{
-		auto it = operatorPrecedenceMap.find(op);
-		if (it != operatorPrecedenceMap.end())
-		{
-			return it->second;
-		}
-		return 0;
-	}
+    inline int GetPrecedence(const Operators op)
+    {
+        auto it = OPERATOR_PRECEDENCE_MAP.find(op);
+        if (it != OPERATOR_PRECEDENCE_MAP.end())
+        {
+            return it->second;
+        }
+        return 0;
+    }
 
-	inline double EvaluateBinaryOperation(operators op, double l, double r)
-	{
-		auto it = operatorFunctionMap.find(op);
-		if (it != operatorFunctionMap.end())
-		{
-			return it->second(l, r);
-		}
-		throw std::invalid_argument("Invalid operator");
-	}
+    inline double EvaluateBinaryOperation(const Operators op, const double l, const double r)
+    {
+        const auto it = OPERATOR_FUNCTION_MAP.find(op);
+        if (it != OPERATOR_FUNCTION_MAP.end())
+        {
+            return it->second(l, r);
+        }
+        throw std::invalid_argument("Invalid operator");
+    }
 
-	struct token
-	{
-		token() {}
-		token(double value) : value(value), isOperator(false) {}
-		token(char parenthesis) : parenthesis(parenthesis), isParenthesis(true) {}
-		token(operators op) : op(op), isOperator(true)
-		{
-			type = GetOperatorType(op);
-		}
+    struct Token
+    {
+        Token() = default;
 
-		double value = 0;
+        explicit Token(const double value) : value(value)
+        {
+        }
 
-		bool isParenthesis = false;
-		char parenthesis = 0;
+        explicit Token(const char parenthesis) : isParenthesis(true), parenthesis(parenthesis)
+        {
+        }
 
-		bool isOperator = false;
-		type type = type::binary;
-		operators op = operators::plus;
-	};
+        explicit Token(const Operators op) : isOperator(true), op(op)
+        {
+            type = GetOperatorType(op);
+        }
 
-	inline int operator|(type a, type b)
-	{
-		return (static_cast<int>(a) | static_cast<int>(b));
-	}
+        double value = 0;
 
-	inline int operator&(type a, type b)
-	{
-		return (static_cast<int>(a) & static_cast<int>(b));
-	}
+        bool isParenthesis = false;
+        char parenthesis = 0;
+
+        bool isOperator = false;
+        Type type = Type::Binary;
+        Operators op = Operators::Plus;
+    };
+
+    inline int operator|(Type a, Type b)
+    {
+        return (static_cast<int>(a) | static_cast<int>(b));
+    }
+
+    inline int operator&(Type a, Type b)
+    {
+        return (static_cast<int>(a) & static_cast<int>(b));
+    }
 }
