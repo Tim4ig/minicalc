@@ -2,14 +2,12 @@
 
 #include <iostream>
 
-#include <Windows.h>
-
 int main()
 {
     while (true)
     {
         std::string expression;
-        std::cout << "Enter an expression: ";
+        std::cout << "> ";
         std::getline(std::cin, expression);
 
         if (expression == "exit")
@@ -17,13 +15,13 @@ int main()
 
         if (expression == "clear")
         {
-            system("cls");
+            system("clear");
             continue;
         }
 
         try
         {
-            std::cout << "Result: " << minicalc::Interpreter::Eval(expression) << '\n';
+            std::cout << "= " << minicalc::Interpreter::Eval(expression) << '\n';
         }
         catch (std::exception& e)
         {
